@@ -92,7 +92,7 @@ export default function RadeMachineSite() {
 
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [ripples, setRipples] = useState<RippleType[]>([]);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [useCustomCursor, setUseCustomCursor] = useState(false);
 
   const boardSize = useMemo(() => {
     if (typeof window === "undefined") return BASE_SIZE;
@@ -158,12 +158,19 @@ export default function RadeMachineSite() {
   }, []);
 
   useEffect(() => {
-    const touchCapable =
-      typeof window !== "undefined" &&
-      ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+  if (typeof window === "undefined") return;
 
-    setIsTouchDevice(touchCapable);
-  }, []);
+  const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+
+  const updateInputMode = () => {
+    setIsTouchDevice(!mediaQuery.matches);
+  };
+
+  updateInputMode();
+
+  mediaQuery.addEventListener("change", updateInputMode);
+  return () => mediaQuery.removeEventListener("change", updateInputMode);
+}, []);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -389,7 +396,7 @@ export default function RadeMachineSite() {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_45%)]" />
       <div className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:36px_36px]" />
 
-      {!isTouchDevice && (
+      {useCustomCursor && (
         <>
           <div
             className="pointer-events-none fixed z-50 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white bg-black shadow-[0_0_18px_rgba(255,255,255,0.7)]"
@@ -451,9 +458,7 @@ export default function RadeMachineSite() {
             </div>
 
             <p className="mt-4 text-center text-xs uppercase tracking-[0.16em] text-white/45 sm:text-sm">
-              {isTouchDevice
-                ? "Swipe on the board to move"
-                : "Use arrow keys to move"}
+              {useCustomCursor ? "Use arrow keys to move" : "Swipe on the board to move"}
             </p>
 
             {gameOver && (
