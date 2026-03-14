@@ -89,11 +89,12 @@ export default function RadeMachineSite() {
   const [speed, setSpeed] = useState<number>(START_SPEED);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [joined, setJoined] = useState<boolean>(false);
-
+  
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [ripples, setRipples] = useState<RippleType[]>([]);
   const [useCustomCursor, setUseCustomCursor] = useState(false);
-
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  
   const boardSize = useMemo(() => {
     if (typeof window === "undefined") return BASE_SIZE;
     const viewportWidth = window.innerWidth;
@@ -154,23 +155,38 @@ export default function RadeMachineSite() {
   }
 
   useEffect(() => {
-    setFood(getRandomFood(snake));
+    if (typeof window === "undefined") return;
+  
+    const updateDeviceMode = () => {
+      const width = window.innerWidth;
+      const mobile = width < 768;
+  
+      setIsMobileDevice(mobile);
+      setUseCustomCursor(!mobile);
+    };
+  
+    updateDeviceMode();
+    window.addEventListener("resize", updateDeviceMode);
+  
+    return () => window.removeEventListener("resize", updateDeviceMode);
   }, []);
-
+  
   useEffect(() => {
-  if (typeof window === "undefined") return;
-
-  const mediaQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
-
-  const updateInputMode = () => {
-    setIsTouchDevice(!mediaQuery.matches);
-  };
-
-  updateInputMode();
-
-  mediaQuery.addEventListener("change", updateInputMode);
-  return () => mediaQuery.removeEventListener("change", updateInputMode);
-}, []);
+    if (!useCustomCursor) return;
+  
+    const handleMove = (e: MouseEvent) => {
+      setMouse({ x: e.clientX, y: e.clientY });
+    };
+  
+    const handleClick = (e: MouseEvent) => {
+      const newRipple: RippleType = {
+        id: Date.now() + Math.random(),
+        x: e.clientX,
+        y: e.clientY,
+      };
+  
+      setRipples((prev) => [...prev, newRipple]);
+    };
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -288,23 +304,6 @@ export default function RadeMachineSite() {
     ctx.fill();
     ctx.restore();
   }, [snake, food]);
-
-  useEffect(() => {
-    if (isTouchDevice) return;
-
-    const handleMove = (e: MouseEvent) => {
-      setMouse({ x: e.clientX, y: e.clientY });
-    };
-
-    const handleClick = (e: MouseEvent) => {
-      const newRipple: RippleType = {
-        id: Date.now() + Math.random(),
-        x: e.clientX,
-        y: e.clientY,
-      };
-
-      setRipples((prev) => [...prev, newRipple]);
-    };
 
     window.addEventListener("mousemove", handleMove);
     window.addEventListener("click", handleClick);
@@ -458,7 +457,7 @@ export default function RadeMachineSite() {
             </div>
 
             <p className="mt-4 text-center text-xs uppercase tracking-[0.16em] text-white/45 sm:text-sm">
-              {useCustomCursor ? "Use arrow keys to move" : "Swipe on the board to move"}
+              {isMobileDevice ? "Swipe on the board to move" : "Use arrow keys to move"}
             </p>
 
             {gameOver && (
