@@ -173,6 +173,14 @@ export default function RadeMachineSite() {
   
   useEffect(() => {
     if (!useCustomCursor) return;
+    window.addEventListener("mousemove", handleMove);
+    window.addEventListener("click", handleClick);
+    
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("click", handleClick);
+    };
+    }, [useCustomCursor]);
   
     const handleMove = (e: MouseEvent) => {
       setMouse({ x: e.clientX, y: e.clientY });
@@ -304,15 +312,6 @@ export default function RadeMachineSite() {
     ctx.fill();
     ctx.restore();
   }, [snake, food]);
-
-    window.addEventListener("mousemove", handleMove);
-    window.addEventListener("click", handleClick);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      window.removeEventListener("click", handleClick);
-    };
-  }, [isTouchDevice]);
 
   useEffect(() => {
     if (ripples.length === 0) return;
