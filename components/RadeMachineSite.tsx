@@ -495,7 +495,7 @@ export default function RadeMachineSite() {
 
                 <input
                   className="rounded-full border border-white/20 bg-white/[0.03] px-5 py-3 text-white outline-none placeholder:text-white/30"
-                  placeholder="email@domain.com"
+                  placeholder="email@rademachine.com"
                   type="email"
                   required
                   value={email}
