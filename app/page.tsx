@@ -1,5 +1,5 @@
-import RadeMachineSite from "@/components/RadeMachineSite";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return <RadeMachineSite />;
+export default function Page() {
+  redirect("/home");
 }

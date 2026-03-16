@@ -85,7 +85,7 @@ export default function RadeMachineSite() {
   const [showForm, setShowForm] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [gameOver, setGameOver] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(true);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [speed, setSpeed] = useState<number>(START_SPEED);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [joined, setJoined] = useState<boolean>(false);
@@ -95,12 +95,20 @@ export default function RadeMachineSite() {
   const [useCustomCursor, setUseCustomCursor] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   
-  const boardSize = useMemo(() => {
-    if (typeof window === "undefined") return BASE_SIZE;
-    const viewportWidth = window.innerWidth;
-    const horizontalPadding = 32;
-    const maxWidth = Math.min(BASE_SIZE, viewportWidth - horizontalPadding);
-    return Math.max(280, maxWidth);
+  const [boardSize, setBoardSize] = useState(BASE_SIZE);
+
+  useEffect(() => {
+    const updateBoardSize = () => {
+      const viewportWidth = window.innerWidth;
+      const horizontalPadding = 32;
+      const maxWidth = Math.min(BASE_SIZE, viewportWidth - horizontalPadding);
+      setBoardSize(Math.max(280, maxWidth));
+    };
+
+    updateBoardSize();
+    window.addEventListener("resize", updateBoardSize);
+
+    return () => window.removeEventListener("resize", updateBoardSize);
   }, []);
 
   function resetGame() {
@@ -118,6 +126,11 @@ export default function RadeMachineSite() {
     setIsPlaying(true);
     setShowForm(false);
     setSpeed(START_SPEED);
+  }
+
+  function startGame() {
+    setGameOver(false);
+    setIsPlaying(true);
   }
 
   function playAgainFromPopup() {
@@ -442,7 +455,7 @@ export default function RadeMachineSite() {
         {!showForm && (
           <>
             <div
-              className="rounded-[28px] border border-white/15 bg-white/[0.03] p-3 shadow-[0_0_80px_rgba(255,255,255,0.07)] backdrop-blur-md md:p-4"
+              className="relative rounded-[28px] border border-white/15 bg-white/[0.03] p-3 shadow-[0_0_80px_rgba(255,255,255,0.07)] backdrop-blur-md md:p-4"
               onTouchStart={handleTouchStart}
               onTouchEnd={handleTouchEnd}
             >
@@ -453,26 +466,31 @@ export default function RadeMachineSite() {
                 className="block rounded-2xl border border-white/15 bg-black touch-none"
                 style={{ width: boardSize, height: boardSize, maxWidth: "100%" }}
               />
+
+              {!isPlaying && !showForm && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="flex flex-col items-center gap-4">
+                    {gameOver && (
+                      <p className="text-center text-base uppercase tracking-[0.16em] text-white/80 md:text-lg md:tracking-[0.18em]">
+                        Game over. You hit the wall.
+                      </p>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={gameOver ? resetGame : startGame}
+                      className="rounded-full border border-white bg-black/80 px-6 py-3 text-sm uppercase tracking-[0.22em] text-white backdrop-blur-sm transition duration-200 hover:bg-white hover:text-black"
+                    >
+                      {gameOver ? "Restart" : "Play"}
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             <p className="mt-4 text-center text-xs uppercase tracking-[0.16em] text-white/45 sm:text-sm">
               {isMobileDevice ? "Swipe on the board to move" : "Use arrow keys to move"}
             </p>
-
-            {gameOver && (
-              <div className="mt-6 flex flex-col items-center gap-3">
-                <p className="text-center text-base uppercase tracking-[0.16em] text-white/80 md:text-lg md:tracking-[0.18em]">
-                  Game over. You hit the wall.
-                </p>
-                <button
-                  type="button"
-                  onClick={resetGame}
-                  className="rounded-full border border-white px-6 py-3 text-sm uppercase tracking-[0.22em] transition duration-200 hover:bg-white hover:text-black"
-                >
-                  Restart
-                </button>
-              </div>
-            )}
           </>
         )}
       </div>
