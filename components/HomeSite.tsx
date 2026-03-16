@@ -89,42 +89,40 @@ useEffect(() => {
       <div className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.04)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:36px_36px]" />
 
       <div className="relative z-10 flex w-full max-w-4xl flex-col items-center text-center">
-        <div className="rounded-[32px] border border-white/15 bg-white/[0.03] px-8 py-12 shadow-[0_0_100px_rgba(255,255,255,0.08)] backdrop-blur-md sm:px-12 sm:py-16">
+        <div className="rounded-[28px] border border-white/15 bg-white/[0.03] px-5 py-8 shadow-[0_0_100px_rgba(255,255,255,0.08)] backdrop-blur-md sm:px-8 sm:py-10 md:px-10 md:py-12 lg:px-12 lg:py-16">
           
-          <div className="mb-6 inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.28em] text-white/60 sm:text-xs">
+          <div className="flex flex-col items-center gap-4 md:gap-5">
+          <div className="inline-flex rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.22em] text-white/60 sm:text-xs md:px-5 md:py-2.5">
             RADE MACHINE
           </div>
-          <div className="glitch">
-            Glitch text
+
+          <div className="glitch-wrap max-w-full">
+            <h1
+              className="glitch-base text-center text-5xl font-black uppercase tracking-[0.04em] sm:text-5xl md:text-[4.2rem] md:tracking-[0.06em] lg:text-6xl lg:tracking-[0.1em] xl:text-7xl"
+              style={{ fontFamily: "var(--font-orbitron)" }}
+            >
+              COMING SOON
+            </h1>
+
+            <h1
+              aria-hidden="true"
+              className="glitch-copy glitch-copy-1 text-center text-5xl font-black uppercase tracking-[0.04em] sm:text-5xl md:text-[4.2rem] md:tracking-[0.06em] lg:text-6xl lg:tracking-[0.1em] xl:text-7xl"
+              style={{ fontFamily: "var(--font-orbitron)" }}
+            >
+              COMING SOON
+            </h1>
+
+            <h1
+              aria-hidden="true"
+              className="glitch-copy glitch-copy-2 text-center text-5xl font-black uppercase tracking-[0.04em] sm:text-5xl md:text-[4.2rem] md:tracking-[0.06em] lg:text-6xl lg:tracking-[0.1em] xl:text-7xl"
+              style={{ fontFamily: "var(--font-orbitron)" }}
+            >
+              COMING SOON
+            </h1>
           </div>
-
-{/* 
-          <div className="relative inline-block overflow-visible">
-        <h1
-            className="relative z-10 text-4xl font-black uppercase tracking-[0.18em] sm:text-6xl md:text-7xl md:tracking-[0.28em]"
-            style={{ fontFamily: "var(--font-orbitron)" }}
-        >
-            Coming Soon
-        </h1>
-
-        <h1
-            aria-hidden="true"
-            className="pointer-events-none absolute left-0 top-0 z-20 text-4xl font-black uppercase tracking-[0.18em] text-white/70 glitch-layer-1 sm:text-6xl md:text-7xl md:tracking-[0.28em]"
-            style={{ fontFamily: "var(--font-orbitron)" }}
-        >
-            Coming Soon
-        </h1>
-
-        <h1
-            aria-hidden="true"
-            className="pointer-events-none absolute left-0 top-0 z-20 text-4xl font-black uppercase tracking-[0.18em] text-white/40 glitch-layer-2 sm:text-6xl md:text-7xl md:tracking-[0.28em]"
-            style={{ fontFamily: "var(--font-orbitron)" }}
-        >
-            Coming Soon
-        </h1> 
-        </div> */}
-
-          <p className="mx-auto mt-6 max-w-2xl text-sm uppercase tracking-[0.16em] text-white/55 sm:text-base md:text-lg">
+        </div>
+        
+          <p className="mx-auto mt-5 max-w-xl text-sm uppercase tracking-[0.1em] text-white/55 sm:text-base md:mt-6 md:max-w-2xl md:tracking-[0.14em]">
             We are an independent game studio currently developing our first project.
           </p>
 
