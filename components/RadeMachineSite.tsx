@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 const GRID = 20;
 const CELL = 20;
@@ -428,17 +429,39 @@ export default function RadeMachineSite() {
       )}
 
       <div className="relative z-10 flex w-full max-w-5xl flex-col items-center">
-        <div className="mb-6 text-center md:mb-8">
-          <h1
-            className="text-4xl font-black uppercase tracking-[0.22em] sm:text-5xl md:text-7xl md:tracking-[0.35em]"
-            style={{ fontFamily: "var(--font-orbitron)" }}
-          >
-            RADE MACHINE
-          </h1>
-          <p className="mt-4 text-xs uppercase tracking-[0.18em] text-white/55 sm:text-sm md:text-base md:tracking-[0.25em]">
-            Collect 10 glowing stars to unlock the whitelist
-          </p>
-        </div>
+      <div className="mb-6 text-center md:mb-8">
+        <Link
+          href="/"
+          aria-label="Go to home page"
+          className="group inline-block"
+          style={{ fontFamily: "var(--font-orbitron)" }}
+        >
+          <span className="relative inline-block">
+            <span className="relative z-10 inline-block text-4xl font-black uppercase tracking-[0.22em] text-white transition-opacity duration-200 group-hover:opacity-90 sm:text-5xl md:text-7xl md:tracking-[0.35em]">
+              RADE MACHINE
+            </span>
+
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-0 top-0 z-20 inline-block text-4xl font-black uppercase tracking-[0.22em] text-white/80 opacity-0 group-hover:opacity-100 glitch-hover-1 sm:text-5xl md:text-7xl md:tracking-[0.35em]"
+            >
+              RADE MACHINE
+            </span>
+
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute left-0 top-0 z-30 inline-block text-4xl font-black uppercase tracking-[0.22em] text-white/50 opacity-0 group-hover:opacity-100 glitch-hover-2 sm:text-5xl md:text-7xl md:tracking-[0.35em]"
+            >
+              RADE MACHINE
+            </span>
+          </span>
+        </Link>
+
+        <p className="mt-4 text-xs uppercase tracking-[0.18em] text-white/55 sm:text-sm md:text-base md:tracking-[0.25em]">
+          Collect 10 glowing stars to unlock the whitelist
+        </p>
+      </div>
+
 
         <div className="mb-5 flex flex-wrap items-center justify-center gap-3 md:mb-6">
           <div className="rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.16em] text-white/70 backdrop-blur-sm sm:text-sm">
